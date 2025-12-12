@@ -29,7 +29,7 @@ res.status(201).json({
     _id:newUser._id,
     fullName:newUser.fullName,
     email:newUser.email,
-    profilePic:newUser.profilePic
+    profilePic:newUser.profilePic,
 })
         }
 else{
@@ -49,13 +49,13 @@ const login=async (req,res)=>{
         })
         if(!user){
             return res.status(400).json({
-                message:"Invalid credentials"
+                message:"Invalid email"
             })
          
         }
         const isPasswordCorrect=   await bcrypt.compare(password,user.password)
         if(!isPasswordCorrect){
-            return res.status(400).json({message:"Invalid credentials"})
+            return res.status(400).json({message:"Invalid password"})
         }
         generateToken(user._id, res)
         res.status(200).json({_id:user._id,

@@ -17,6 +17,7 @@ try{
     next()
 
 }catch(error){
+    console.log("Error in middleware")
             return res.status(401).json({ message: "Unauthorized - Token Failed" });
 
 
