@@ -20,7 +20,13 @@ export const useAuth= create((set)=>(
     finally{
         set({isCheckingAuth:false})
     }
+
+},
+signup:async(data)=>{
+    
+
 }
+
     
 }
 
