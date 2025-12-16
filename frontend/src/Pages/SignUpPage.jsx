@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAuth } from "../store/useAuthStore";
-import AuthImagePattern from "../components/AuthImagePattern.jsx";
 import { MessageSquare, User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -18,58 +17,62 @@ const SignUpPage = () => {
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!formData.fullName.trim() || !formData.password.trim()) {
-      return toast.error("All fields are required");
+    if (
+      !formData.fullName.trim() ||
+      !formData.email.trim() ||
+      !formData.password.trim()
+    ) {
+      toast.error("All fields are required");
+      return false;
     }
-    if (!formData.email.trim()) {
-      return toast.error("All fields are required");
-    }
+
     if (!emailRegex.test(formData.email)) {
       toast.error("Please enter a valid email address");
       return false;
     }
+
     if (formData.password.length < 6) {
-      alert("Password must be at least 6 characters");
+      toast.error("Password must be at least 6 characters");
       return false;
     }
+
     return true;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     signup(formData);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-md space-y-8 p-6">
-        {/* Logo / Heading */}
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
+      <div className="w-full max-w-md bg-gray-800 rounded-xl shadow-lg p-6 space-y-8">
+        {/* Heading */}
         <div className="text-center">
           <div className="flex flex-col items-center gap-2">
-            <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center">
+            <div className="size-12 rounded-xl bg-primary/20 flex items-center justify-center">
               <MessageSquare className="size-6 text-primary" />
             </div>
-            <h1 className="text-2xl font-bold mt-2">Create Account</h1>
-            <p className="text-base-content/60">
-              Get started with your free account
-            </p>
+            <h1 className="text-2xl font-bold text-white mt-2">
+              Create Account
+            </h1>
+            <p className="text-gray-400">Get started with your free account</p>
           </div>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Full Name */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Full Name</span>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">
+              Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-3 size-5 text-base-content/40" />
+              <User className="absolute left-3 top-3 size-5 text-gray-400" />
               <input
                 type="text"
-                className="input input-bordered w-full pl-10"
+                className="w-full pl-10 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Aparna Singh"
                 value={formData.fullName}
                 onChange={(e) =>
@@ -80,15 +83,13 @@ const SignUpPage = () => {
           </div>
 
           {/* Email */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Email</span>
-            </label>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Email</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 size-5 text-base-content/40" />
+              <Mail className="absolute left-3 top-3 size-5 text-gray-400" />
               <input
                 type="email"
-                className="input input-bordered w-full pl-10"
+                className="w-full pl-10 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="aparna@gmail.com"
                 value={formData.email}
                 onChange={(e) =>
@@ -99,15 +100,13 @@ const SignUpPage = () => {
           </div>
 
           {/* Password */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Password</span>
-            </label>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Password</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-3 size-5 text-base-content/40" />
+              <Lock className="absolute left-3 top-3 size-5 text-gray-400" />
               <input
                 type={showPassword ? "text" : "password"}
-                className="input input-bordered w-full pl-10 pr-10"
+                className="w-full pl-10 pr-10 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={(e) =>
@@ -116,7 +115,7 @@ const SignUpPage = () => {
               />
               <button
                 type="button"
-                className="absolute right-3 top-3"
+                className="absolute right-3 top-3 text-gray-400 hover:text-white"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -127,26 +126,21 @@ const SignUpPage = () => {
           {/* Submit */}
           <button
             type="submit"
-            className="btn btn-primary w-full"
             disabled={isSigningUp}
+            className="w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded transition"
           >
             {isSigningUp ? "Creating Account..." : "Sign Up"}
           </button>
         </form>
-        <div className="text-center">
-          <p className="text-base-content/60">
-            Already have an account?{" "}
-            <Link to="/login" className="link link-primary">
-              Sign in
-            </Link>
-          </p>
-        </div>
+
+        {/* Footer */}
+        <p className="text-center text-gray-400 text-sm">
+          Already have an account?{" "}
+          <Link to="/login" className="text-primary hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
-      {/* right side */}
-      {/* <AuthImagePattern
-        title="Join our Community"
-        subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
-      /> */}
     </div>
   );
 };
